@@ -1,0 +1,6 @@
+name: docker-ml
+docker_env:
+  image:  mlflow-docker
+entry_points:
+  main:
+    command: "python new_script.py"
