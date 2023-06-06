@@ -1,9 +1,7 @@
 import mlflow
 import mlflow.pyfunc
 from sklearn.utils import check_array
-import sys
-import json
-import pkg_resources
+import joblib
 class LogisticRegressionWrapper(mlflow.pyfunc.PythonModel):
     def __init__(self, model):
         self.model = model
@@ -16,12 +14,6 @@ class LogisticRegressionWrapper(mlflow.pyfunc.PythonModel):
         pass
     def log_model(self):
         pass
-def generate_requirements_file(output_file):
-    installed_packages = pkg_resources.working_set
-    with open(output_file, 'w') as file:
-        for package in installed_packages:
-            file.write(f"{package.key}=={package.version}\n")
-    print(f"Requirements file generated: {output_file}")
 # def get_input_schema(input_schema_file):
 #     with open(input_schema_file, "r") as file:
 #         input_schema=json.load(file)
@@ -64,3 +56,11 @@ def deploy_model_on_mlflow(model, model_name, conda_env=None):
         # Retrieve the artifact URI of the logged model
         model_uri = f"runs:/{run.info.run_id}/{model_name}"
     return model_uri
+# Load the pre-trained model from file
+model = joblib.load("model.pkl")
+print("Pre-trained model loaded from file.")
+
+# Call the wrapper function to deploy the model on MLflow
+model_name = "wine_model"
+model_uri = deploy_model_on_mlflow(model, model_name)
+print("Model deployed on MLflow. Model URI:", model_uri)

@@ -1,6 +1,6 @@
 name: docker-ml
 docker_env:
-  image:  mlflow-docker
+  image:  ml_docker
 entry_points:
   main:
-    command: "python new_script.py"
+    command: "python deploy_model.py"
